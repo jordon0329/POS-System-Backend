@@ -3,20 +3,19 @@ const Schema = mongoose.Schema;
 
 const OrderSchema = new Schema(
   {
-    order: [
+    products: [
       {
         type: Schema.Types.ObjectId,
         ref: 'product',
       },
     ],
-    customer: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'customer',
-      },
-    ],
+    customer: {
+      type: Schema.Types.ObjectId,
+      ref: 'customer',
+    },
     status: {
       type: Number,
+      default: 0,
       required: true,
     },
     totalPrice: {

@@ -75,7 +75,7 @@ router.put(
       });
       customer.overwrite(req.body);
       await customer.save();
-      res.json(category);
+      res.json(customer);
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');
@@ -88,7 +88,10 @@ router.delete('/delete/:id', auth([Role.Admin]), async (req, res) => {
     const deleteCustomer = await Customer.findOneAndDelete({
       _id: req.params.id,
     });
-    return res.status(200).json(deleteCustomer);
+    if (deleteCustomer) {
+      return res.status(200).json(deleteCustomer);
+    }
+    return res.send({msg: 'Customer not found or already deleted'});
   } catch (error) {
     console.error(error);
     return res.status(500).json({ msg: 'Server error' });
