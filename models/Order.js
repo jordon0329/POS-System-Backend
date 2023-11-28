@@ -9,7 +9,7 @@ const OrderSchema = new Schema(
         ref: 'product',
       },
     ],
-    customerName: [
+    customer: [
       {
         type: Schema.Types.ObjectId,
         ref: 'customer',

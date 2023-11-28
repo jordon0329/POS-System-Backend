@@ -16,25 +16,23 @@ const CustomerSchema = new Schema(
     phoneNumber: {
       type: String,
       unique: true,
+      required: true,
     },
     city: {
       type: String,
       required: true,
+      trim: true,
     },
     address: {
       type: String,
       required: true,
+      trim: true,
     },
     zipCode: {
       type: String,
       required: true,
+      trim: true,
     },
-    orderList: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'order',
-      },
-    ],
   },
   { timestamps: true }
 );
