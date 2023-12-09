@@ -20,14 +20,14 @@ router.post('/add', auth([Role.Admin]), async (req, res) => {
         });
         await product.save();
         res.json(product);
-      } else if(product.category.indexOf(category) === -1) {
+      } else if (product.category.indexOf(category) === -1) {
         console.log('Product exists, add the new category');
         product.category.push(category);
         await product.save();
         res.json(product);
       } else {
         console.log('Product exists, do nothing');
-        res.send({msg: 'Product exists, do nothing'});
+        res.send({ msg: 'Product exists, do nothing' });
       }
     });
   } catch (err) {
@@ -46,8 +46,18 @@ router.get('/', auth([Role.Admin, Role.User]), async (req, res) => {
   }
 });
 
+router.get('/:id', auth([Role.Admin, Role.User]), async (req, res) => {
+  try {
+    const product = await Product.findOne({ _id: req.params.id });
+    res.json(product);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
 router.delete('/delete/', auth([Role.Admin, Role.User]), async (req, res) => {
-  const {productName, category} = req.body;
+  const { productName, category } = req.body;
   try {
     Product.findOne({ productName: productName }).then(async (product, err) => {
       if (product === null) {
@@ -55,16 +65,16 @@ router.delete('/delete/', auth([Role.Admin, Role.User]), async (req, res) => {
         res.send("Product doesn't exist");
       } else if (product.category.indexOf(category) === -1) {
         console.log('Nothing to delete');
-        res.send({mgs: "Nothing to delete"});
-      } else if(product.category.length === 1) {
+        res.send({ mgs: 'Nothing to delete' });
+      } else if (product.category.length === 1) {
         console.log('Delete the product');
         await Product.findOneAndDelete({ productName: productName });
-        res.send({msg: 'Delete the product'});
+        res.send({ msg: 'Delete the product' });
       } else {
         console.log('Delete the category');
         product.category.pull(category);
         await product.save();
-        res.send({msg: 'Delete the category'});
+        res.send({ msg: 'Delete the category' });
       }
     });
   } catch (err) {

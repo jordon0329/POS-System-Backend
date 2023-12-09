@@ -45,6 +45,18 @@ router.get('/', auth([Role.Admin, Role.User]), async (req, res) => {
   }
 });
 
+router.get('/:id', auth([Role.Admin, Role.User]), async (req, res) => {
+  try {
+    const category = await Category.findOne({
+      _id: req.params.id,
+    });
+    res.json(category.categoryName);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
 router.put(
   '/update/:id',
   auth([Role.Admin]),

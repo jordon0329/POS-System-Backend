@@ -9,7 +9,7 @@ const Order = require('../../models/Order');
 router.post(
   '/add',
   auth([Role.Admin, Role.User]),
-  check('products', 'Products is required').notEmpty(),
+  check('dishes', 'Dishes are required').notEmpty(),
   check('customer', 'Customer is required').notEmpty(),
   async (req, res) => {
     const errors = validationResult(req);
@@ -17,9 +17,9 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
     try {
-      const { products, customer, status, totalPrice } = req.body;
+      const { dishes, customer, status, totalPrice } = req.body;
       const newOrder = new Order({
-        products: products, // array of products
+        dishes: dishes, // array of products
         customer: customer, // object
         status: status, // string
         totalPrice: totalPrice, // number
